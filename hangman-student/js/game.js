@@ -32,8 +32,6 @@ var word = {
       if (_.contains(this.secretWord, guessedLetter) == false) {
               player.wrongLetters.push(guessedLetter);
           }
-
-      return [this.secretWordWithBlanks, wrongLetters];
   }
 };
 
@@ -59,14 +57,15 @@ var player = {
   // Check if the player has won and end the game if so
   checkWin: function(wordString){
       if (_.isEqual(word.secretWord,word.secretWordWithBlanks)){
-          console.log("You win")
+          document.getElementById("gameStatus").innerText = "Congratulations! You win.";
       }
   },
 
   // Check if the player has lost and end the game if so
   checkLose: function(wrongLetters){
-      if (this.guessedLetters.length == this.MAX_GUESSES){
-          console.log("You lose, max 8 guessed")
+      if (this.wrongLetters.length === this.MAX_GUESSES){
+          document.getElementById("gameStatus").innerText = "Sorry, you lose. Please try again.";
+
       }
   }
 };
@@ -80,6 +79,7 @@ var game = {
       document.getElementById("guessedLetters").innerText = "";
       document.getElementById("letterField").value = "";
       player.guessedLetters = [];
+      document.getElementById("gameStatus").innerText = "";
   },
   // Reveals the answer to the secret word and ends the game
   giveUp: function(){
@@ -91,22 +91,22 @@ var game = {
 };
 
 window.onload = function(){
-
     word.setSecretWord();
   // Start a new game
   // Add event listener to the letter input field to grab letters that are guessed
   // Add event listener to the reset button to reset the game when clicked
   // Add event listener to the give up button to give up when clicked
-    document.getElementById("letterField").onkeyup = function(event){
-       player.makeGuess(this.value);
+    document.getElementById("letterField").onkeyup = function(event) {
+        player.makeGuess(this.value);
+        player.checkWin();
+        player.checkLose();
     };
 
-    document.getElementById("giveUpButton").onclick = function(event){
+    document.getElementById("giveUpButton").onclick = function(event) {
        game.giveUp()
     };
 
     document.getElementById("resetButton").onclick = function(event) {
        game.resetGame();
-    }
-
+    };
 };
