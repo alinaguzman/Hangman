@@ -31,7 +31,6 @@ var player = {
   // Takes a new letter as input and updates the game
   makeGuess: function(letter){
       if (this.guessedLetters.length < this.MAX_GUESSES){
-         letter = document.getElementById("letterField").value;
          word.checkLetters(letter);
          if (_.contains(player.guessedLetters, letter)){
              console.log("Already guessed letter, try again")
@@ -39,17 +38,24 @@ var player = {
              this.guessedLetters.push(letter);
              document.getElementById("guessedLetters").innerText = this.guessedLetters;
              document.getElementById("wordString").innerText = word.secretWordWithBlanks;
+             document.getElementById("guessesLeft").innerText = parseInt(this.MAX_GUESSES - this.guessedLetters.length);
          }
       }
   },
 
   // Check if the player has won and end the game if so
   checkWin: function(wordString){
-//      if (word.secretWord == )
+      if (_.isEqual(word.secretWord,word.secretWordWithBlanks)){
+          console.log("You win")
+      }
   },
 
   // Check if the player has lost and end the game if so
-  checkLose: function(wrongLetters){}
+  checkLose: function(wrongLetters){
+      if (this.guessedLetters.length == this.MAX_GUESSES){
+          console.log("You lose, max 8 guessed")
+      }
+  }
 };
 
 var game = {
@@ -64,12 +70,15 @@ var game = {
 };
 
 window.onload = function(){
-//    var letter = document.getElementById("letterField");
-//    letter.onkeydown = function(event) {
-//        letter.value =
-//    }
+    word.setSecretWord();
+
   // Start a new game
   // Add event listener to the letter input field to grab letters that are guessed
   // Add event listener to the reset button to reset the game when clicked
   // Add event listener to the give up button to give up when clicked
+    var letter = document.getElementById("letterField");
+    letter.onkeyup = function(event){
+       var key = this.value;
+       player.makeGuess(key);
+    }
 };
