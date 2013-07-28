@@ -68,14 +68,17 @@ var player = {
 var game = {
   // Resets the game
   resetGame: function(){
-
+      word.setSecretWord();
+      document.getElementById("wordString").innerText = "";
+      document.getElementById("guessesLeft").innerText = "";
+      document.getElementById("guessedLetters").innerText = "";
+      document.getElementById("letterField").value = "";
+      player.guessedLetters = [];
   },
-
   // Reveals the answer to the secret word and ends the game
   giveUp: function(){
       document.getElementById("wordString").innerText = word.secretWord;
   },
-
   // Update the display with the parts of the secret word guessed, the letters guessed, and the guesses remaining
   updateDisplay: function(secretWordWithBlanks, guessedLetters, guessesLeft){
 
@@ -90,12 +93,15 @@ window.onload = function(){
   // Add event listener to the reset button to reset the game when clicked
   // Add event listener to the give up button to give up when clicked
     document.getElementById("letterField").onkeyup = function(event){
-        var key = this.value;
-       player.makeGuess(key);
+       player.makeGuess(this.value);
     };
 
     document.getElementById("giveUpButton").onclick = function(event){
-        game.giveUp()
+       game.giveUp()
     };
+
+    document.getElementById("resetButton").onclick = function(event) {
+       game.resetGame();
+    }
 
 };
