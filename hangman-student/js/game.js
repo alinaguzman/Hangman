@@ -2,13 +2,11 @@ var word = {
   secretWord: "",
   secretWordWithBlanks: "",
   wordList: ['ruby', 'rails', 'javascript', 'array', 'hash', 'underscore', 'sinatra', 'model', 'controller', 'view', 'devise', 'authentication', 'capybara', 'jasmine', 'cache', 'sublime', 'terminal', 'system', 'twitter', 'facebook', 'function', 'google', 'amazon', 'development', 'data', 'design', 'inheritance', 'prototype', 'gist', 'github', 'agile', 'fizzbuzz', 'route', 'gem', 'deployment', 'database'],
-
   // Selects a random word from the word list sets the secret word
   setSecretWord: function(){
       this.secretWord = this.wordList[Math.floor(Math.random() * this.wordList.length)];
       this.secretWordWithBlanks = this.secretWord.replace(/\w/g,"_");
   },
-
   // Takes an array of letters as input and returns an array of two items:
   // 1) A string with the parts of the secret word that have been guessed correctly and underscore for the parts that haven't
   // 2) An array of all the guessed letters that were not in the secret word
@@ -21,7 +19,7 @@ var word = {
           if (this.secretWord[i] === guessedLetter) {
               temp[i] = guessedLetter;
               this.secretWordWithBlanks = temp.join("");
-      }
+          }
   }
       return [this.secretWordWithBlanks, wrongLetters];
   }
@@ -30,15 +28,18 @@ var word = {
 var player = {
   MAX_GUESSES: 8,
   guessedLetters: [],
-
   // Takes a new letter as input and updates the game
   makeGuess: function(letter){
       if (this.guessedLetters.length < this.MAX_GUESSES){
          letter = document.getElementById("letterField").value;
          word.checkLetters(letter);
-         this.guessedLetters.push(letter);
-         document.getElementById("guessedLetters").innerText = this.guessedLetters;
-         document.getElementById("wordString").innerText = word.secretWordWithBlanks;
+         if (_.contains(player.guessedLetters, letter)){
+             console.log("Already guessed letter, try again")
+         } else {
+             this.guessedLetters.push(letter);
+             document.getElementById("guessedLetters").innerText = this.guessedLetters;
+             document.getElementById("wordString").innerText = word.secretWordWithBlanks;
+         }
       }
   },
 
