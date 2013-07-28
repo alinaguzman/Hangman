@@ -8,9 +8,6 @@ var word = {
       this.secretWord = this.wordList[Math.floor(Math.random() * this.wordList.length)];
       this.secretWordWithBlanks = this.secretWord.replace(/\w/g,"_");
   },
-  updateSecretWord: function(){
-
-  },
 
   // Takes an array of letters as input and returns an array of two items:
   // 1) A string with the parts of the secret word that have been guessed correctly and underscore for the parts that haven't
@@ -40,8 +37,9 @@ var player = {
          letter = document.getElementById("letterField").value;
          word.checkLetters(letter);
          this.guessedLetters.push(letter);
+         document.getElementById("guessedLetters").innerText = this.guessedLetters;
+         document.getElementById("wordString").innerText = word.secretWordWithBlanks;
       }
-      console.log(word.secretWordWithBlanks + " ----" + this.guessedLetters)
   },
 
   // Check if the player has won and end the game if so
