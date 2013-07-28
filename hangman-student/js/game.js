@@ -27,7 +27,12 @@ var word = {
               temp[i] = guessedLetter;
               this.secretWordWithBlanks = temp.join("");
           }
-  }
+      }
+
+      if (_.contains(this.secretWord, guessedLetter) == false) {
+              player.wrongLetters.push(guessedLetter);
+          }
+
       return [this.secretWordWithBlanks, wrongLetters];
   }
 };
@@ -35,9 +40,10 @@ var word = {
 var player = {
   MAX_GUESSES: 8,
   guessedLetters: [],
+  wrongLetters: [],
   // Takes a new letter as input and updates the game
   makeGuess: function(letter){
-      if (this.guessedLetters.length < this.MAX_GUESSES){
+      if (this.wrongLetters.length < this.MAX_GUESSES){
          word.checkLetters(letter);
          if (_.contains(player.guessedLetters, letter)){
              console.log("Already guessed letter, try again")
@@ -45,7 +51,7 @@ var player = {
              this.guessedLetters.push(letter);
              document.getElementById("guessedLetters").innerText = this.guessedLetters;
              document.getElementById("wordString").innerText = word.secretWordWithBlanks;
-             document.getElementById("guessesLeft").innerText = parseInt(this.MAX_GUESSES - this.guessedLetters.length);
+             document.getElementById("guessesLeft").innerText = parseInt(this.MAX_GUESSES - this.wrongLetters.length);
          }
       }
   },
@@ -81,7 +87,6 @@ var game = {
   },
   // Update the display with the parts of the secret word guessed, the letters guessed, and the guesses remaining
   updateDisplay: function(secretWordWithBlanks, guessedLetters, guessesLeft){
-
   }
 };
 
